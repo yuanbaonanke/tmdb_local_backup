@@ -10,8 +10,10 @@
 ## 快速开始
 
 ```bash
-# 1. 修改 config.yaml 中 auth.password
-# 2. 启动
+# 1. 导入镜像
+docker load -i tmdb-backup.tar
+# 2. 修改 config.yaml 中 auth.password
+# 3. 启动
 docker compose up -d
 ```
 
@@ -39,6 +41,21 @@ API Key:   登录管理后台查看你的密钥
 | `GET /3/find/{imdb_id}` | IMDb 反查 |
 | `GET /t/p/{size}{path}` | 图片代理 |
 
+## 数据量与热度档位
+
+`min_popularity` 控制抓取范围，值越大数据越精（热门），越小越全。TMDB popularity 呈长尾分布，绝大多数条目集中在低分区域。
+
+| min_popularity | movie | tv | 总计 | 约DB大小 | 说明 |
+|---|---|---|---|---|---|
+| 0 | 122万 | 22.6万 | ~145万 | ~15GB | 全量 |
+| 1 | ~40万 | ~8万 | ~48万 | ~5GB | 略去极端冷门 |
+| 3 | ~20万 | ~5万 | ~25万 | ~2.5GB | 常规冷门以上 |
+| 5 | ~12万 | ~3万 | ~15万 | ~1.5GB | **推荐**，主流影视均覆盖 |
+| 10 | ~5万 | ~1.5万 | ~6.5万 | ~700MB | 仅热门 |
+| 20 | ~1.5万 | ~5000 | ~2万 | ~250MB | 仅最热 |
+
+> 以上为典型值，实际根据 TMDB 数据日更会有浮动。0 档包含所有条目包括无海报/无简介的冷门数据。
+
 ## 预爬数据
 
 ```bash
@@ -46,7 +63,7 @@ API Key:   登录管理后台查看你的密钥
 docker compose exec tmdb-backup /app/tmdb-backup -mode crawl -kinds movie,tv
 ```
 
-数据量参考：movie ~122 万 + tv ~22 万，全量约 15GB，数天完成。支持随时中断重启续爬。
+支持随时中断重启续爬。
 
 ## 配置
 
