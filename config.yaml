@@ -1,0 +1,28 @@
+# TMDB API 代理地址（国内建议用反代，海外可用官方 api.tmdb.org）
+api_base: "https://api.tmdb.org"
+api_key: "82af8283fcad610057fa0216e88ba4eb"
+# 图片代理模板 {size}换尺寸 {path}换路径
+image_proxy_template: "https://wsrv.nl/?url=https://image.tmdb.org/t/p/{size}{path}"
+
+db_path: "/app/data/tmdb.db"
+listen_addr: ":8080"
+
+language: "zh-CN"
+fallback_language: "en-US"
+
+# 旗舰版许可证（留空=免费个人版）
+license_key: ""
+
+# Web 管理后台登录
+auth:
+  username: "admin"
+  password: "change_me"
+
+crawler:
+  concurrency: 8
+  min_interval_ms: 25
+  max_retries: 5
+  backoff_base_ms: 1000
+  min_popularity: 0     # 0=全量，设 5 可缩小范围
+  fetch_persons: false
+  export_dir: "/app/data/exports"
