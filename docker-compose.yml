@@ -1,0 +1,13 @@
+services:
+  tmdb-backup:
+    image: tmdb-backup:latest
+    container_name: tmdb-backup
+    restart: unless-stopped
+    ports:
+      - "18898:8080"
+    volumes:
+      - ./data:/app/data
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      - TZ=Asia/Shanghai
+    command: ["-mode", "serve", "-auto-crawl=false"]
