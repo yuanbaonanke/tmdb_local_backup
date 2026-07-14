@@ -65,6 +65,24 @@ docker compose exec tmdb-backup /app/tmdb-backup -mode crawl -kinds movie,tv
 
 支持随时中断重启续爬。
 
+### 抓取速率
+
+速率取决于网络到 TMDB API 的延迟和 `concurrency`/`min_interval_ms` 配置。
+
+| 并发 | 间隔 | 速率 | 全量(145万) | pop≥5(15万) |
+|---|---|---|---|---|
+| 8 | 60ms | ~5/s | ~3天 | ~8小时 |
+| 16 | 25ms | ~8/s | ~2天 | ~5小时 |
+| 24 | 15ms | ~12/s | ~1.5天 | ~3小时 |
+
+> 以上为 `api.tmdb.org` 直连实测。TMDB 官方限流约 50 req/s，保持 `min_interval_ms≥15`（~66/s 上限）即安全。
+
+```bash
+# 查看实时进度
+curl -c /tmp/c.txt -d "username=admin&password=xxx" http://localhost:18898/login -o /dev/null
+curl -b /tmp/c.txt http://localhost:18898/api/stats
+```
+
 ## 配置
 
 `config.yaml`，主要配置项：
