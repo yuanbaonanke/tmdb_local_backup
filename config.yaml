@@ -1,6 +1,6 @@
 # TMDB API 代理地址（国内建议用反代，海外可用官方 api.tmdb.org）
 api_base: "https://api.tmdb.org"
-api_key: "82af8283fcad610057fa0216e88ba4eb"
+api_key: ""
 # 图片代理模板 {size}换尺寸 {path}换路径
 image_proxy_template: "https://wsrv.nl/?url=https://image.tmdb.org/t/p/{size}{path}"
 
